@@ -9,6 +9,10 @@ const connectDB = require("./db/connect");
 app.use(express.json());
 
 // routes
+app.use("/api/v1/auth", require("./routes/auth"));
+app.use("/api/v1/admin", require("./routes/admin"));
+app.use("/api/v1/teacher", require("./routes/teacher"));
+app.use("/api/v1/student", require("./routes/student"));
 app.get("/", (req, res) => {
   res.send({ message: "Hello World!" });
 });
