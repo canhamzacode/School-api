@@ -31,7 +31,7 @@ const TeacherSchema = new Schema(
     },
     role: {
       type: String,
-      default: "student",
+      default: "teacher",
     },
   },
   { timestamps: true }

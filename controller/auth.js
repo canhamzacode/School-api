@@ -10,7 +10,7 @@ const loginController = async (req, res) => {
       throw new INTERNAL_SERVER_ERROR("User data not found");
     }
 
-    const { password, ...userData } = req.user;
+    const userData = req.user;
     const {
       userType,
       data: { email },
@@ -20,7 +20,7 @@ const loginController = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(StatusCodes.OK).json({ token, data: userData });
+    res.status(StatusCodes.OK).json({ token, data: userData.data });
   } catch (error) {
     console.error(error);
     throw new INTERNAL_SERVER_ERROR("Something went wrong ");
@@ -58,7 +58,6 @@ const signupController = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.log(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: "Internal Server Error" });

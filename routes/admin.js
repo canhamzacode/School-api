@@ -4,7 +4,7 @@ const {
   createNewTeacher,
   updateTeacher,
   deleteTeacher,
-  viewAllStudentReults,
+  getAllStudentReults,
   updateStudentInformation,
   deleteStudent,
   getAllTeachers,
@@ -13,17 +13,34 @@ const {
   getAllStudents,
   getAllClasses,
   addNewClass,
+  createNewAdmin,
+  updateAdmin,
+  deleteAdmin,
 } = require("../controller/admin");
+const {
+  validateAdminRegistration,
+  validateTeacherRegistration,
+} = require("../middlewares/validate-registration");
 
+router.route("/").post(validateAdminRegistration, createNewAdmin);
+router.route("/:id").patch(updateAdmin).delete(updateAdmin, deleteAdmin);
+
+router.route("/student/results").get(getAllStudentReults);
 router.get("/students", getAllStudents);
+
 router.route("/classes").get(getAllClasses);
 router.route("/classes/:id").post(addNewClass);
+
 router
   .route("/students/:id")
   .get(getStudent)
   .patch(updateStudentInformation)
   .delete(deleteStudent);
-router.route("/teachers").post(createNewTeacher).get(getAllTeachers);
+
+router
+  .route("/teachers")
+  .post(validateTeacherRegistration, createNewTeacher)
+  .get(getAllTeachers);
 router
   .route("/teachers/:id")
   .get(getTeacher)
