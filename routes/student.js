@@ -1,15 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {
-  addStudentResult,
+  getStudentInfo,
   getStudentResult,
-  updateStudentResult,
-} = require("../controller/teacher");
+  updateStudentInfo,
+} = require("../controller/student");
 
-router
-  .route("/studnet/result/:id")
-  .get(getStudentResult)
-  .put(addStudentResult)
-  .patch(updateStudentResult);
+router.route("/student/result/:id").get(getStudentResult);
+router.route("/student/:id").get(getStudentInfo).patch(updateStudentInfo);
 
 module.exports = router;

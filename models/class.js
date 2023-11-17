@@ -10,7 +10,6 @@ const ClassSchema = new Schema(
 
     numberOfStudents: {
       type: Number,
-      minlength: 3,
     },
   },
   { timestamps: true }

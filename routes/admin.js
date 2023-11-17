@@ -4,14 +4,30 @@ const {
   createNewTeacher,
   updateTeacher,
   deleteTeacher,
-  viewAllStudents,
+  viewAllStudentReults,
   updateStudentInformation,
   deleteStudent,
   getAllTeachers,
+  getStudent,
+  getTeacher,
+  getAllStudents,
+  getAllClasses,
+  addNewClass,
 } = require("../controller/admin");
 
-// router.route("/students").post(viewAllStudents);
+router.get("/students", getAllStudents);
+router.route("/classes").get(getAllClasses);
+router.route("/classes/:id").post(addNewClass);
+router
+  .route("/students/:id")
+  .get(getStudent)
+  .patch(updateStudentInformation)
+  .delete(deleteStudent);
 router.route("/teachers").post(createNewTeacher).get(getAllTeachers);
-router.route("/teachers/:id").patch(updateTeacher).delete(deleteTeacher);
+router
+  .route("/teachers/:id")
+  .get(getTeacher)
+  .patch(updateTeacher)
+  .delete(deleteTeacher);
 
 module.exports = router;

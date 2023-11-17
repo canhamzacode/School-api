@@ -1,3 +1,5 @@
+const Class = require("../models/class");
+const { StatusCodes } = require("http-status-codes");
 const createNewTeacher = (req, res) => {
   res.send("Create Teacher");
 };
@@ -20,6 +22,29 @@ const getAllTeachers = (req, res) => {
   res.send("Get All Teachers");
 };
 
+const getStudent = (req, res) => {
+  res.send("Get a student");
+};
+const getTeacher = (req, res) => {
+  res.send("Get a Teacher");
+};
+const getAllStudents = (req, res) => {
+  res.send("Get All Students");
+};
+const getAllClasses = async (req, res) => {
+  try {
+    const allClass = await Class.find({});
+    if (!allClass) {
+      return [];
+    }
+    res
+      .status(StatusCodes.OK)
+      .json({ msg: "Sucessfully retrieved all class ", allClass });
+  } catch (error) {}
+};
+const addNewClass = (req, res) => {
+  res.send("Get All Students");
+};
 module.exports = {
   createNewTeacher,
   updateTeacher,
@@ -28,4 +53,9 @@ module.exports = {
   updateStudentInformation,
   deleteStudent,
   getAllTeachers,
+  getStudent,
+  getTeacher,
+  getAllStudents,
+  getAllClasses,
+  addNewClass,
 };
