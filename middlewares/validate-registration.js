@@ -2,16 +2,7 @@ const { BadRequestError } = require("../errors");
 const Student = require("../models/student");
 const Admin = require("../models/admin");
 const Teacher = require("../models/teacher");
-
-const checkUniqueness = async (email) => {
-  const studentWithEmail = await Student.findOne({ email });
-  const adminWithEmail = await Admin.findOne({ email });
-  const teacherWithEmail = await Teacher.findOne({ email });
-
-  if (studentWithEmail || adminWithEmail || teacherWithEmail) {
-    throw new BadRequestError("Email already in use");
-  }
-};
+const { checkUniqueness } = require("../utils/check-uniqueness");
 
 const validateStudentRegistration = async (req, res, next) => {
   const {

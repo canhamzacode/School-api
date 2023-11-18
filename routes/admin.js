@@ -1,46 +1,64 @@
 const express = require("express");
 const router = express.Router();
 const {
-  createNewTeacher,
-  updateTeacher,
-  deleteTeacher,
-  getAllStudentReults,
-  updateStudentInformation,
-  deleteStudent,
   getAllTeachers,
-  getStudent,
   getTeacher,
+  deleteTeacher,
+  updateTeacher,
+  createNewTeacher,
+} = require("../controller/teacher");
+
+const {
   getAllStudents,
-  getAllClasses,
-  addNewClass,
+  getStudent,
+  updateStudent,
+  deleteStudent,
+} = require("../controller/student");
+
+const {
   createNewAdmin,
   updateAdmin,
   deleteAdmin,
+  getAllAdmins,
+  getAdmin,
 } = require("../controller/admin");
+
 const {
   validateAdminRegistration,
   validateTeacherRegistration,
 } = require("../middlewares/validate-registration");
 
-router.route("/").post(validateAdminRegistration, createNewAdmin);
-router.route("/:id").patch(updateAdmin).delete(updateAdmin, deleteAdmin);
+const {
+  getAllClasses,
+  addNewClass,
+  deleteClass,
+} = require("../controller/class");
 
-router.route("/student/results").get(getAllStudentReults);
+const { getAllReults } = require("../controller/result");
+
+router
+  .route("/")
+  .get(getAllAdmins)
+  .post(validateAdminRegistration, createNewAdmin);
+router.route("/:id").get(getAdmin).patch(updateAdmin).delete(deleteAdmin);
+
+router.route("/student/results").get(getAllReults);
 router.get("/students", getAllStudents);
 
 router.route("/classes").get(getAllClasses);
-router.route("/classes/:id").post(addNewClass);
+router.route("/classes/:id").post(addNewClass).delete(deleteClass);
 
 router
   .route("/students/:id")
   .get(getStudent)
-  .patch(updateStudentInformation)
+  .patch(updateStudent)
   .delete(deleteStudent);
 
 router
   .route("/teachers")
   .post(validateTeacherRegistration, createNewTeacher)
   .get(getAllTeachers);
+
 router
   .route("/teachers/:id")
   .get(getTeacher)
