@@ -30,7 +30,7 @@ const getAllAdmins = async (req, res) => {
 
 const deleteAdmin = async (req, res) => {
   const { id } = req.params;
-  validateId(id);
+  await validateId(id);
   const admin = await Admin.findByIdAndDelete(id);
   if (!admin) {
     throw new BadRequestError("Invalid Id");
@@ -44,7 +44,7 @@ const deleteAdmin = async (req, res) => {
 const updateAdmin = async (req, res) => {
   const updateData = req.body;
   const { id } = req.params;
-  validateId(id);
+  await validateId(id);
   const admin = await Admin.findById(id);
   if (!admin) {
     throw new NotFoundError("No such user found");
@@ -67,7 +67,7 @@ const updateAdmin = async (req, res) => {
 
 const getAdmin = async (req, res) => {
   const { id } = req.params;
-  validateId(id);
+  await validateId(id);
   const admin = await Admin.findOne({ _id: id });
   res.status(StatusCodes.OK).json({
     message: "Admin Received Sucessfully",

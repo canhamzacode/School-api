@@ -12,18 +12,15 @@ const loginController = async (req, res) => {
 
     const userData = req.user;
     const {
-      userType,
-      data: { email },
+      data: { email, role },
     } = req.user;
-
-    const token = jwt.sign({ email, userType }, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign({ email, role }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
 
     res.status(StatusCodes.OK).json({ token, data: userData.data });
   } catch (error) {
-    console.error(error);
-    throw new INTERNAL_SERVER_ERROR("Something went wrong ");
+    throw new INTERNAL_SERVER_ERROR("Something went wrong");
   }
 };
 

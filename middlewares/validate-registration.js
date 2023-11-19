@@ -15,7 +15,6 @@ const validateStudentRegistration = async (req, res, next) => {
     _classId,
     dateOfBirth,
     phoneNumber,
-    role,
   } = req.body;
 
   if (
@@ -27,8 +26,7 @@ const validateStudentRegistration = async (req, res, next) => {
     !sex ||
     !_classId ||
     !dateOfBirth ||
-    !phoneNumber ||
-    !role
+    !phoneNumber
   ) {
     throw new BadRequestError("All fields must be provided");
   }

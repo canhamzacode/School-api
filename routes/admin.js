@@ -1,5 +1,44 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../middlewares/verifyToken");
+
+const applyRoute = (path, controllers, middleware) => {
+  const route = router.route(path);
+
+  if (middleware) {
+    route.all(middleware);
+  }
+  if (middleware) {
+    route.all(middleware);
+  }
+
+  if (controllers.get) {
+    route.get(controllers.get);
+  }
+
+  if (controllers.post) {
+    route.post(controllers.post);
+  }
+
+  if (controllers.patch) {
+    route.patch(controllers.patch);
+  }
+
+  if (controllers.delete) {
+    route.delete(controllers.delete);
+  }
+};
+
+// Middleware for admin routes
+const adminMiddleware = verifyToken(["admin"]);
+
+// Middleware for teacher routes
+const teacherMiddleware = verifyToken(["teacher"]);
+
+// Middleware for student routes
+const studentMiddleware = verifyToken(["student"]);
+
+// Import your controllers and validation middlewares
 const {
   getAllTeachers,
   getTeacher,
@@ -15,6 +54,7 @@ const {
   deleteStudent,
 } = require("../controller/student");
 
+// Admin Controllers
 const {
   createNewAdmin,
   updateAdmin,
@@ -32,37 +72,104 @@ const {
   getAllClasses,
   addNewClass,
   deleteClass,
+  updateClass,
+  getAllStudentsInAClass,
+  getAClass,
 } = require("../controller/class");
 
 const { getAllReults } = require("../controller/result");
 
-router
-  .route("/")
-  .get(getAllAdmins)
-  .post(validateAdminRegistration, createNewAdmin);
-router.route("/:id").get(getAdmin).patch(updateAdmin).delete(deleteAdmin);
+// Apply routes using applyRoute function
+applyRoute(
+  "/students/:id",
+  {
+    get: getStudent,
+    patch: updateStudent,
+    delete: deleteStudent,
+  },
+  studentMiddleware
+);
 
-router.route("/student/results").get(getAllReults);
-router.get("/students", getAllStudents);
+applyRoute(
+  "/teachers/:id",
+  {
+    get: getTeacher,
+    patch: updateTeacher,
+    delete: deleteTeacher,
+  },
+  teacherMiddleware
+);
 
-router.route("/classes").get(getAllClasses);
-router.route("/classes/:id").post(addNewClass).delete(deleteClass);
+applyRoute(
+  "/classes/:id",
+  {
+    get: getAClass,
+    patch: updateClass,
+    delete: deleteClass,
+  },
+  adminMiddleware
+);
 
-router
-  .route("/students/:id")
-  .get(getStudent)
-  .patch(updateStudent)
-  .delete(deleteStudent);
+applyRoute(
+  "/students/class/:id",
+  {
+    get: getAllStudentsInAClass,
+  },
+  adminMiddleware
+);
 
-router
-  .route("/teachers")
-  .post(validateTeacherRegistration, createNewTeacher)
-  .get(getAllTeachers);
+applyRoute(
+  "/students",
+  {
+    get: getAllStudents,
+  },
+  adminMiddleware
+);
 
-router
-  .route("/teachers/:id")
-  .get(getTeacher)
-  .patch(updateTeacher)
-  .delete(deleteTeacher);
+applyRoute(
+  "/teachers",
+  {
+    post: validateTeacherRegistration,
+    get: getAllTeachers,
+  },
+  adminMiddleware
+);
+
+applyRoute(
+  "/classes",
+  {
+    get: getAllClasses,
+    post: addNewClass,
+    delete: deleteClass,
+  },
+  adminMiddleware
+);
+
+applyRoute(
+  "/student/results",
+  {
+    get: getAllReults,
+  },
+  adminMiddleware
+);
+
+applyRoute(
+  "/:id",
+  {
+    get: getAdmin,
+    patch: updateAdmin,
+    delete: deleteAdmin,
+  },
+  adminMiddleware
+);
+
+applyRoute(
+  "/",
+  {
+    get: getAllAdmins,
+    post: validateAdminRegistration,
+  },
+  adminMiddleware
+);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const { BadRequestError } = require("../errors");
-const { Student, Admin, Teacher } = require("../models");
+const { Student, Admin, Teacher, Class } = require("../models");
 
 const checkUniqueness = async (email) => {
   const studentWithEmail = await Student.findOne({ email });
@@ -25,4 +25,15 @@ const checkUniquenessBeforeUpdate = async (email, currentEmail) => {
   }
 };
 
-module.exports = { checkUniqueness, checkUniquenessBeforeUpdate };
+const checkClassBeforeUpdate = async (name, currentName) => {
+  const myClass = await Class.findOne({ name });
+  if (myClass && myClass.name !== currentName) {
+    throw new BadRequestError("This class name is already taken");
+  }
+};
+
+module.exports = {
+  checkUniqueness,
+  checkUniquenessBeforeUpdate,
+  checkClassBeforeUpdate,
+};

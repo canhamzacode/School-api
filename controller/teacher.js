@@ -28,7 +28,7 @@ const getAllTeachers = async (req, res) => {
 
 const getTeacher = async (req, res) => {
   const { id } = req.params;
-  validateId(id);
+  await validateId(id);
   const teacher = await Teacher.findOne({ _id: id });
   if (!teacher) {
     throw new NotFoundError("No such user found");
@@ -41,10 +41,10 @@ const getTeacher = async (req, res) => {
 const updateTeacher = async (req, res) => {
   const updateData = req.body;
   const { id } = req.params;
-  validateId(id);
+  await validateId(id);
   const currentTeacher = await Teacher.findById(id);
   if (!currentTeacher) {
-    throw new NotFoundError("No such user found");
+    throw new BadRequestError("Invalid Id");
   }
   if (updateData && updateData.email) {
     await checkUniquenessBeforeUpdate(updateData.email, currentTeacher.email);
@@ -53,7 +53,7 @@ const updateTeacher = async (req, res) => {
     new: true,
   });
   if (!updatedTeacher) {
-    throw new NotFoundError("No such user found");
+    throw new BadRequestError("Failed to Update");
   }
   res.status(StatusCodes.OK).json({
     message: "Teacher updated successfully",
@@ -63,7 +63,7 @@ const updateTeacher = async (req, res) => {
 
 const deleteTeacher = async (req, res) => {
   const { id } = req.params;
-  validateId(id);
+  await validateId(id);
   const teacher = await Teacher.findByIdAndDelete(id);
   if (!teacher) {
     throw new NotFoundError("No such user found");
