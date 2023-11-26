@@ -16,13 +16,17 @@ const verifyToken = (allowedRoles) => (req, res, next) => {
     if (allowedRoles && !allowedRoles.includes(decoded.role)) {
       throw new UnauthorizedError("Unauthorized access");
     }
-
+    const dateNow = new Date();
     req.user = decoded;
     next();
   } catch (error) {
-    console.log(token);
-    console.log(error);
-    throw new UnauthorizedError("Invalid token");
+    if (error instanceof jwt.TokenExpiredError) {
+      throw new UnauthorizedError("Token has expired");
+    } else {
+      console.log(token);
+      console.log(error);
+      throw new UnauthorizedError("Invalid token");
+    }
   }
 };
 

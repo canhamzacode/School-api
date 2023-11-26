@@ -17,8 +17,15 @@ const loginController = async (req, res) => {
     const token = jwt.sign({ email, role }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
-
-    res.status(StatusCodes.OK).json({ token, data: userData.data });
+    const { _id: id, firstName, lastName } = userData.data;
+    const loginResponse = {
+      id,
+      firstName,
+      lastName,
+      email,
+      role,
+    };
+    res.status(StatusCodes.OK).json({ token, data: loginResponse });
   } catch (error) {
     throw new INTERNAL_SERVER_ERROR("Something went wrong");
   }
@@ -49,10 +56,11 @@ const signupController = async (req, res) => {
     if (!user) {
       throw new Error("Something went wrong");
     }
-
+    const { _id: id, _classId: classId, firstName, lastName, email } = user;
+    const signupResponse = { id, classId, firstName, lastName, email };
     res.status(StatusCodes.CREATED).json({
       message: "User Created successfully",
-      data: user,
+      data: signupResponse,
     });
   } catch (error) {
     res

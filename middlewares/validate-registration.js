@@ -1,7 +1,4 @@
 const { BadRequestError } = require("../errors");
-const Student = require("../models/student");
-const Admin = require("../models/admin");
-const Teacher = require("../models/teacher");
 const { checkUniqueness } = require("../utils/check-uniqueness");
 
 const validateStudentRegistration = async (req, res, next) => {

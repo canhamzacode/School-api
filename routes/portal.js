@@ -8,9 +8,6 @@ const applyRoute = (path, controllers, middleware) => {
   if (middleware) {
     route.all(middleware);
   }
-  if (middleware) {
-    route.all(middleware);
-  }
 
   if (controllers.get) {
     route.get(controllers.get);
@@ -129,9 +126,10 @@ applyRoute(
 applyRoute(
   "/teachers",
   {
-    post: validateTeacherRegistration,
+    post: createNewTeacher,
     get: getAllTeachers,
   },
+  validateTeacherRegistration,
   adminMiddleware
 );
 
@@ -154,7 +152,7 @@ applyRoute(
 );
 
 applyRoute(
-  "/:id",
+  "/admin/:id",
   {
     get: getAdmin,
     patch: updateAdmin,
@@ -164,11 +162,12 @@ applyRoute(
 );
 
 applyRoute(
-  "/",
+  "/admin",
   {
     get: getAllAdmins,
-    post: validateAdminRegistration,
+    post: createNewAdmin,
   },
+  validateAdminRegistration,
   adminMiddleware
 );
 

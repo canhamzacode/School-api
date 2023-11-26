@@ -12,8 +12,7 @@ app.use(express.json());
 
 // routes
 app.use("/api/v1/auth", require("./routes/auth"));
-app.use("/api/v1/admin", require("./routes/admin"));
-// app.use("/api/v1/student", require("./routes/student"));
+app.use("/api/v1/portal", require("./routes/portal"));
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
