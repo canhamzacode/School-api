@@ -74,7 +74,12 @@ const {
   getAClass,
 } = require("../controller/class");
 
-const { getAllReults } = require("../controller/result");
+const {
+  getAllResults,
+  addResult,
+  updateResult,
+  deleteResult,
+} = require("../controller/result");
 
 // Apply routes using applyRoute function
 applyRoute(
@@ -116,6 +121,17 @@ applyRoute(
 );
 
 applyRoute(
+  "/student/results/:id",
+  {
+    get: getAllResults,
+    post: addResult,
+    patch: updateResult,
+    delete: deleteResult,
+  },
+  adminMiddleware
+);
+
+applyRoute(
   "/students",
   {
     get: getAllStudents,
@@ -139,14 +155,6 @@ applyRoute(
     get: getAllClasses,
     post: addNewClass,
     delete: deleteClass,
-  },
-  adminMiddleware
-);
-
-applyRoute(
-  "/student/results",
-  {
-    get: getAllReults,
   },
   adminMiddleware
 );
